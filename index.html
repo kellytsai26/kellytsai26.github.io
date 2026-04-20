@@ -3,58 +3,57 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude 採購方案專業評估</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Claude 採購方案比較</title>
     <style>
         :root {
-            --primary: #d97757; /* Claude 品牌色調偏暖 */
-            --bg: #f9f7f2;
+            --primary: #1f4a7c;
+            --accent: #f57c00;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
-            --text-dark: #1a1a1a;
-            --text-light: #666;
-            --pro-color: #d97757;
-            --team-color: #1f4a7c;
-            --border: #e5e7eb;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --pro-highlight: #fff7ed;
         }
 
-        * { box-sizing: border-box; }
-        
         body {
-            font-family: 'Inter', -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
             background-color: var(--bg);
-            color: var(--text-dark);
+            color: var(--text-main);
             line-height: 1.6;
             margin: 0;
-            padding: 0;
+            padding: 40px 20px;
         }
 
         .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        /* 標題區域 */
         header {
             text-align: center;
             margin-bottom: 50px;
         }
 
-        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; color: #333; }
-        
-        .recommendation-badge {
-            background: #fef3c7;
-            color: #92400e;
-            padding: 12px 24px;
-            border-radius: 50px;
-            display: inline-block;
-            font-weight: 600;
-            border: 1px solid #f59e0b;
-            margin-bottom: 20px;
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--primary);
+            text-align: center;
         }
 
-        /* 頂部方案卡片 */
-        .pricing-grid {
+        .recommendation-box {
+            background: #ecf3ff;
+            border-left: 5px solid var(--primary);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        /* 方案卡片佈局 */
+        .pricing-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
@@ -63,114 +62,139 @@
 
         .plan-card {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 30px 20px;
-            text-align: center;
             border: 1px solid var(--border);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .plan-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         }
 
-        .plan-card.featured {
-            border: 2px solid var(--pro-color);
-            transform: scale(1.05);
-            z-index: 10;
+        .plan-card.pro-featured {
+            border: 2px solid var(--accent);
+            background-color: var(--pro-highlight);
+            position: relative;
         }
 
-        .plan-card.featured::after {
-            content: "最佳建議";
+        .pro-featured::before {
+            content: "推薦方案";
             position: absolute;
-            top: -15px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--pro-color);
+            background: var(--accent);
             color: white;
-            padding: 4px 15px;
+            padding: 2px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
+            font-weight: bold;
         }
 
-        .plan-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; }
-        .plan-price { font-size: 1.8rem; font-weight: 800; margin-bottom: 5px; }
-        .plan-price span { font-size: 0.9rem; color: var(--text-light); }
-        .plan-desc { font-size: 0.85rem; color: var(--text-light); height: 60px; }
+        .plan-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
 
-        /* 功能比較表格 */
-        .comparison-section {
+        .plan-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            min-height: 3em;
+        }
+
+        .plan-meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .plan-summary {
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+            font-style: italic;
+        }
+
+        /* 功能表格樣式 */
+        .table-container {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            overflow-x: auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
         }
-
-        h2 { font-size: 1.8rem; margin-top: 60px; margin-bottom: 25px; border-left: 5px solid var(--pro-color); padding-left: 15px; }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            text-align: left;
         }
 
-        th {
-            background: #fff;
-            padding: 20px 15px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            border-bottom: 2px solid var(--border);
-            z-index: 5;
-        }
-
-        td {
-            padding: 15px;
+        th, td {
+            padding: 16px;
             border-bottom: 1px solid var(--border);
-            text-align: center;
         }
 
-        .category-cell {
-            text-align: left;
+        thead th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .category-row {
+            background-color: #f8fafc;
             font-weight: bold;
-            background: #f8fafc;
-            color: var(--team-color);
+            color: var(--primary);
         }
 
-        .feature-cell {
-            text-align: left;
-            padding-left: 30px;
-            color: #4a5568;
-            font-weight: 500;
-        }
+        .check-mark { color: #10b981; font-weight: bold; }
 
-        .check { color: #10b981; font-weight: bold; font-size: 1.2rem; }
-        .dash { color: #cbd5e1; }
-
-        /* Skill 區塊卡片化 */
+        /* Skill 區塊 */
         .skill-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 16px;
             margin-top: 20px;
         }
 
-        .skill-item {
-            background: #fff;
-            border-left: 4px solid var(--pro-color);
+        .skill-card {
+            background: white;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .skill-item strong { display: block; font-size: 1.1rem; margin-bottom: 8px; color: var(--team-color); }
+        .skill-card strong {
+            color: var(--accent);
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 20px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
 
         @media (max-width: 768px) {
-            .pricing-grid { grid-template-columns: 1fr; }
-            .plan-card.featured { transform: scale(1); }
+            .pricing-section { grid-template-columns: 1fr; }
+            table { font-size: 14px; }
+            th, td { padding: 10px; }
         }
     </style>
 </head>
@@ -178,87 +202,103 @@
 
 <div class="container">
     <header>
-        <div class="recommendation-badge">💡 採購建議：優先考慮 Pro 方案 (單帳號多點登入)</div>
-        <h1>Claude 採購方案評估報告</h1>
-        <p style="color: var(--text-light)">針對商務需求、模型能力與自動化流程的深度比較</p>
+        <h2>Claude 採購方案比較</h2>
+        <div class="recommendation-box">
+            考量功能、使用量及價格，建議採購「<strong>Pro 方案</strong>」， 採購一個付費帳號，向仁使用同個帳號登入。
+        </div>
     </header>
 
-    <div class="pricing-grid">
+    <div class="pricing-section">
         <div class="plan-card">
-            <div class="plan-name">免費版</div>
+            <div class="plan-title">免費</div>
             <div class="plan-price">$0</div>
-            <div class="plan-desc">體驗 Claude 核心能力，適合偶爾使用的個人用戶。</div>
+            <div class="plan-meta">基本額度，每 5 小時重置一次<br><small>適合：個人</small></div>
+            <div class="plan-summary">零成本體驗 Claude 核心對話能力</div>
         </div>
-        <div class="plan-card featured">
-            <div class="plan-name">Pro</div>
-            <div class="plan-price">$20<span>/月</span></div>
-            <div class="plan-desc">解鎖 5 倍用量與所有進階開發工具，生產力最佳選擇。</div>
+        <div class="plan-card pro-featured">
+            <div class="plan-title">Pro</div>
+            <div class="plan-price">$20/月<br><small>或 $17/月 (年繳)</small></div>
+            <div class="plan-meta">免費版的 5 倍<br><small>適合：個人 / 小型團隊</small></div>
+            <div class="plan-summary">解鎖進階模型與開發工具，是個人用戶全面提升生產力的最佳入門選擇</div>
         </div>
         <div class="plan-card">
-            <div class="plan-name">Max</div>
-            <div class="plan-price">$100<span>起/月</span></div>
-            <div class="plan-desc">針對極高用量需求，提供 Pro 5-20 倍的連線額度。</div>
+            <div class="plan-title">Max</div>
+            <div class="plan-price">$100 - $200/月</div>
+            <div class="plan-meta">Pro 的 5 至 20 倍<br><small>適合：大型企業</small></div>
+            <div class="plan-summary">功能與 Pro 相同，差在用量、共享高度與設計，用量大幅提升</div>
         </div>
-        <div class="plan-card" style="border-top: 4px solid var(--team-color);">
-            <div class="plan-name">Team</div>
-            <div class="plan-price">$25<span>/人/月</span></div>
-            <div class="plan-desc">需 5 人以上。適合需要行政管理與專案協作的組織。</div>
+        <div class="plan-card">
+            <div class="plan-title">Team 團隊</div>
+            <div class="plan-price">$25/月/位<br><small>需 5 個成員以上</small></div>
+            <div class="plan-meta">多於 Pro，具備管理需求<br><small>適合：多位使用者共用</small></div>
+            <div class="plan-summary">提供團隊共享、管理與隱私保護，讓整個組織都能安全高效地使用 Claude</div>
         </div>
     </div>
 
-    <h2>詳細功能對照</h2>
-    <div class="comparison-section">
+    <h2>功能比較</h2>
+    <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th style="text-align: left; width: 250px;">功能項目</th>
+                    <th>類別 / 功能</th>
                     <th>免費</th>
-                    <th style="color: var(--pro-color)">Pro</th>
+                    <th>Pro</th>
                     <th>Max</th>
                     <th>Team</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td colspan="5" class="category-cell">🤖 模型能力</td></tr>
-                <tr><td class="feature-cell">Claude 3.5 Sonnet (最平衡)</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
-                <tr><td class="feature-cell">Claude 3 Opus (最強理解)</td><td><span class="dash">-</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+                <tr class="category-row"><td colspan="5">基礎功能</td></tr>
+                <tr><td>內容生成</td><td class="check-mark">✔</td><td class="check-mark">✔</td><td class="check-mark">✔</td><td class="check-mark">✔</td></tr>
+                <tr><td>搜尋網頁</td><td></td><td class="check-mark">✔</td><td class="check-mark">✔</td><td class="check-mark">✔</td></tr>
+                <tr><td>語音功能</td><td></td><td class="check-mark">✔</td><td class="check-mark">✔</td><td class="check-mark">✔</td></tr>
+                <tr><td>執行程式碼</td><td></td><td class="check-mark">✔</td><td class="check-mark">✔</td><td class="check-mark">✔</td></tr>
                 
-                <tr><td colspan="5" class="category-cell">🔧 進階工具</td></tr>
-                <tr><td class="feature-cell">連網搜尋 / 執行程式碼</td><td><span class="dash">-</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
-                <tr><td class="feature-cell">Projects (專案知識庫)</td><td><span class="dash">-</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
-                <tr><td class="feature-cell">Skills (自動化外掛)</td><td><span class="check">✔</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
-                <tr><td class="feature-cell">Claude for Excel / PPT</td><td><span class="dash">-</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td><td><span class="check">✔</span></td></tr>
+                <tr class="category-row"><td colspan="5">進階工具</td></tr>
+                <tr><td>Skills / Projects</td><td>✔ / -</td><td class="check-mark">✔ / ✔</td><td class="check-mark">✔ / ✔</td><td class="check-mark">✔ / ✔</td></tr>
+                <tr><td>Research (深度研究)</td><td></td><td></td><td class="check-mark">✔</td><td class="check-mark">✔</td></tr>
+                <tr><td>Claude for Excel / PPT</td><td></td><td class="check-mark">✔</td><td class="check-mark">✔</td><td class="check-mark">✔</td></tr>
                 
-                <tr><td colspan="5" class="category-cell">🏢 團隊管理</td></tr>
-                <tr><td class="feature-cell">專案分享協作</td><td><span class="dash">-</span></td><td><span class="dash">-</span></td><td><span class="dash">-</span></td><td><span class="check">✔</span></td></tr>
-                <tr><td class="feature-cell">企業級安全管理 (SSO)</td><td><span class="dash">-</span></td><td><span class="dash">-</span></td><td><span class="dash">-</span></td><td><span class="check">✔</span></td></tr>
+                <tr class="category-row"><td colspan="5">模型</td></tr>
+                <tr><td>Opus (高階)</td><td></td><td class="check-mark">✔</td><td class="check-mark">✔</td><td class="check-mark">✔</td></tr>
+                <tr><td>Sonnet / Haiku</td><td class="check-mark">✔</td><td class="check-mark">✔</td><td class="check-mark">✔</td><td class="check-mark">✔</td></tr>
+                
+                <tr class="category-row"><td colspan="5">團隊與安全</td></tr>
+                <tr><td>專案分享協作</td><td></td><td></td><td></td><td class="check-mark">✔</td></tr>
+                <tr><td>企業級安全與管理</td><td></td><td></td><td></td><td class="check-mark">✔</td></tr>
             </tbody>
         </table>
     </div>
 
-    <h2>核心優勢：Skill 應用場景</h2>
-    <p>Skill 是讓 Claude 從「聊天機器人」轉化為「專業助理」的關鍵功能。</p>
+    <h2>核心功能 1 - Skill</h2>
+    <p><strong>Skill = AI 的「外掛知識包」或「專業手冊」</strong></p>
+
     <div class="skill-grid">
-        <div class="skill-item">
-            <strong>📁 知識注入模式</strong>
-            將公司 API 規範、品牌風格存入，讓 AI 輸出永遠符合團隊標準。
+        <div class="skill-card">
+            <strong>模式一：知識注入</strong>
+            將團隊的規範、風格指南、領域知識寫成 Skill，讓 Claude 在每次對話中自動套用。例如：將公司的 API 設計規範、品牌文案風格、程式碼命名規則存成 Skill。
         </div>
-        <div class="skill-item">
-            <strong>⚡ 任務自動化</strong>
-            定義固定 SOP，一鍵產出週報、KPI 報告或費用核銷清單。
+        <div class="skill-card">
+            <strong>模式二：任務自動化</strong>
+            將重複性高、格式固定的任務定義成 Skill。例如：每週自動產出 KPI 報告、費用報表，並依指定規則完成。
         </div>
-        <div class="skill-item">
-            <strong>🛠️ 腳本與執行</strong>
-            讓 Claude 具備超級提示能力，自動產生視覺化 HTML 報告或 API 文件。
+        <div class="skill-card">
+            <strong>模式三：腳本執行</strong>
+            讓 Claude 具備超級提示能力。例如：一鍵產出互動式教學頁，或自動產生 API 文件、HTML 視覺化報告。
         </div>
-        <div class="skill-item">
-            <strong>🔗 跨工具整合</strong>
-            連動 Gmail 與 Google Sheets，實現「讀取郵件→自動紀錄→建立日程」的流程。
+        <div class="skill-card">
+            <strong>模式四：團隊標準化</strong>
+            將公司常用語言、審核規範寫成 Skill。讓程式碼審查、行銷文案皆可自動套用團隊規範。
+        </div>
+        <div class="skill-card">
+            <strong>模式五：跨工具整合</strong>
+            結合 Gmail、Google Drive、Calendar、Sheets 等。實現讀取 Gmail → 更新 Sheets → 建立 Calendar 事件。
         </div>
     </div>
 
-    <footer style="margin-top: 80px; text-align: center; color: var(--text-light); padding-bottom: 40px; font-size: 0.9rem;">
-        &copy; 2026 Claude 採購評估報告 | 建議方案：Pro 
+    <footer>
+        <strong>補充說明：</strong><br>
+        Skill 類似「一段被 Claude 在特定情境自動執行的 SOP」， Agent 則為可自主規劃與執行下一步的進階程式。
     </footer>
 </div>
 
